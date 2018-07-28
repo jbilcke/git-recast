@@ -4,7 +4,7 @@
 
 - DONE: find functions
 - DONE: mark functions in a unique way across the program (using parent and signature)
-- DONE: an alogirhtm to search the closest-matching function in the database
+- DONE: an algorithm to search the closest-matching function in the database
 - TODO: compare the new input function with the closest old matching function
 
 ### Bonus features if we have the time
