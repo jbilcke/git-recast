@@ -1,5 +1,5 @@
 const recast = require('recast')
-const damerauLevenshtein = require('talisman/metrics/distance/damerau-levenshtein')
+const distance = require('talisman/metrics/distance/damerau-levenshtein')
 
 // destroy lines of code quickly
 const removeLoC = (node) => {
@@ -19,6 +19,12 @@ const getParamsNames = (params) =>
       : 'undefined'
     )
   )
+
+const findClosestFunction = (needle, haystack) =>
+  haystack
+  .map(item => ({ item, distance: distance(needle, item) }))
+  .sort((a, b) => a.distance - b.distance)
+  [0].item
 
 // get functions from code, computing an id for each of them
 const getFunctions = (node, prefix = 'root', results = []) => {
@@ -73,27 +79,24 @@ const mergeParameters = (before, after, result) => {
 
 }
 
-
 const merge = (before, after) => {
   before = removeLoC(before)
   after = removeLoC(after)
   result = JSON.parse(JSON.stringify(after))
 
-  const functions = getFunctions(before)
-  console.log('functions: ' + JSON.stringify(functions, null, 2))
+  const functionsBefore = getFunctions(before)
+  console.log('functionsBefore: ' + JSON.stringify(functionsBefore, null, 2))
+  
+  const functionsAfter = getFunctions(after)
+  console.log('functionsAfter: ' + JSON.stringify(functionsAfter, null, 2))
+
+  const tmp = findClosestFunction(`root > add(foo,cat)`, functionsBefore)
+  console.log('tmp: ' + JSON.stringify(tmp, null, 2))
 
   mergeParameters(before, after, result)
   
   return result
 }
-
-const codeAfter = recast.parse`
-  function add(foo, cat, duck) {
-    return foo + duck +
-    // Weird formatting, huh?
-    cat;
-  }
-`
 
 console.log(recast.print(
   merge(

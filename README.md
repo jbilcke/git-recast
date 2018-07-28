@@ -2,9 +2,10 @@
 
 ### Algorithm
 
-- OK: find functions
-- OK: mark functions in a unique way across the program (using parent and signature)
-- TODO: when doing the diff, search for the closest-matching function in the database
+- DONE: find functions
+- DONE: mark functions in a unique way across the program (using parent and signature)
+- DONE: an alogirhtm to search the closest-matching function in the database
+- TODO: compare the new input function with the closest old matching function
 
 ### Bonus features if we have the time
 
